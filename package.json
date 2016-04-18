@@ -1,0 +1,15 @@
+{
+  "name": "surf-crew-web",
+  "version": "1.0.0",
+  "description": "Surf Crew website",
+  "main": "index.js",
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "author": "jeremybrooks321@gmail.com",
+  "license": "ISC"
+}
