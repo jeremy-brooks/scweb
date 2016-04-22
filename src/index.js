@@ -2,18 +2,15 @@
  * Created by Jeremy on 13/04/2016.
  */
 function whenPageHasLoaded () {
-    surfLocationLoader = new SurfLocationsLoader("data/favouriteSurfLocations.json");
-    addEventListener(surfLocationLoader.locationsLoadedEventType, visualiseLocations);
-    surfLocationLoader.load();
+    var marineObsModel = new MarineObs();
+    var marineObsService = new MarineObsService();
+    addEventListener(SurfCrew.events.latestMarineObsUpdatedEvent, bootstrapLatestObs);
+    marineObsService.getLatestObs();
 }
-function visualiseLocations(event) {
+function bootstrapLatestObs(event) {
     if(event && event.detail && event.detail instanceof Array){
-        $("#locations").empty();
-        for(var index = 0, location = null; location = event.detail[index]; index++){
-            var listItem = document.createElement("li");
-            listItem.setAttribute("class", "list-group-item");
-            listItem.innerText = location.name;
-            document.getElementById("locations").appendChild(listItem);
+        for (var index = 0, loc = null; loc = event.detail[index]; index++){
+            document.getElementById("k2obs").innerHTML += loc.name;
         }
     }
 }

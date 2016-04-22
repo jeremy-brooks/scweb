@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>surf crew</title>
     <script type="application/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+    <script type="application/javascript" src="src/globalNamespace.js"></script>
+    <script type="application/javascript" src="src/surf/locations/model/marineObsLocation.js"></script>
+    <script type="application/javascript" src="src/surf/locations/model/marineObs.js"></script>
+    <script type="application/javascript" src="src/surf/locations/service/marineObsService.js"></script>
+    <script type="application/javascript" src="src/index.js"></script>
 </head>
 <body onload="whenPageHasLoaded()">
 
@@ -22,19 +27,20 @@
 <a name="saunton"></a>
 <div id="saunton">
     <h4>Saunton</h4>
-    <iframe src="http://magicseaweed.com//Live-Saunton-Sands-Webcam/74/Embed/" width="780" height="439" frameborder="0"></iframe>
+    <!--<iframe src="http://magicseaweed.com//Live-Saunton-Sands-Webcam/74/Embed/" width="780" height="439" frameborder="0"></iframe>-->
 </div>
 
 <a name="croyde"></a>
 <div id="croyde">
     <h4>Croyde</h4>
-    <iframe src="http://magicseaweed.com//Live-Croyde-Beach-Webcam/19/Embed/" width="780" height="439" frameborder="0"></iframe>
+    <!--<iframe src="http://magicseaweed.com//Live-Croyde-Beach-Webcam/19/Embed/" width="780" height="439" frameborder="0"></iframe>-->
 </div>
 
 <a name="k2"></a>
 <div id="k2">
     <h4>K2 buoy (south west of ireland)</h4>
     <img src="images/K2-bouy.png" alt="image of K2 buoy location">
+    <div id="k2obs">Loading...</div>
 </div>
 
 </body>
