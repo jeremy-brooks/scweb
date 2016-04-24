@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>surf crew</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
     <script type="application/javascript" src="node_modules/jquery/dist/jquery.js"></script>
     <script type="application/javascript" src="node_modules/highcharts/highcharts.js"></script>
-    <script type="application/javascript" src="src/globalNamespace.js"></script>
+    <script type="application/javascript" src="src/scGlobalNamespace.js"></script>
     <script type="application/javascript" src="src/surf/locations/model/marineObsLocation.js"></script>
     <script type="application/javascript" src="src/surf/locations/model/marineObs.js"></script>
     <script type="application/javascript" src="src/surf/locations/service/marineObsService.js"></script>
@@ -37,11 +39,10 @@
     <!--<iframe src="http://magicseaweed.com//Live-Croyde-Beach-Webcam/19/Embed/" width="780" height="439" frameborder="0"></iframe>-->
 </div>
 
-<a name="k2"></a>
-<div id="k2">
-    <h4>K2 buoy (south west of ireland)</h4>
-    <img src="images/K2-bouy.png" alt="image of K2 buoy location">
-    <div id="k2chart" style="width:100%; height:400px;"></div>
+<a name="k2"><h4>K2 buoy (south west of ireland)</h4></a>
+<div id="k2" class="row">
+    <div class="col-md-2"><img src="images/K2-bouy.png" alt="image of K2 buoy location"></div>
+    <div id="k2chart" class="col-md-10" style="height:400px;"></div>
 </div>
 
 </body>
