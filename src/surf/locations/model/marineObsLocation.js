@@ -4,13 +4,10 @@
 var MarineObsLocation = function (id, name) {
     this.id = id;
     this.name = name;
-    this._latestObs = [];
+    this._latestObs = null;
 };
 MarineObsLocation.prototype.setLatestObs = function (obs) {
-    this._latestObs.length = 0;
-    for (var obIndex = 0, ob = null; ob = obs[obIndex]; obIndex++){
-        this._latestObs.push(ob);
-    }
+    this._latestObs = obs;
 };
 MarineObsLocation.prototype.getLatestObs = function () {
     return this._latestObs;

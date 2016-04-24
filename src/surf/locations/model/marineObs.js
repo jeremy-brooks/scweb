@@ -13,13 +13,13 @@ MarineObs.prototype.getLocationById = function (locId) {
     }
 };
 MarineObs.prototype.setAllLocationsLatestObs = function (locationObservations) {
-    this.getLocationById(locationObservations.i).setLatestObs(locationObservations.Period);
+    this.getLocationById(locationObservations.siteId).setLatestObs(locationObservations);
     var dataLoadedEvent = document.createEvent("CustomEvent");
     dataLoadedEvent.initCustomEvent(SurfCrew.events.latestMarineObsUpdatedEvent, true, true, this.locations);
     dispatchEvent(dataLoadedEvent);
 };
 MarineObs.prototype.listenForLatestObsData = function (listener, responder) {
     listener.addEventListener(SurfCrew.events.latestMarineObsLoadedEvent, function (data) {
-        responder.setAllLocationsLatestObs(data.detail.SiteRep.DV.Location);
+        responder.setAllLocationsLatestObs(data.detail);
     });
 };
