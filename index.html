@@ -9,9 +9,9 @@
     <script type="application/javascript" src="node_modules/highcharts/highcharts.js"></script>
     <script type="application/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script type="application/javascript" src="src/scGlobalNamespace.js"></script>
-    <script type="application/javascript" src="src/surf/locations/model/marineObsLocation.js"></script>
-    <script type="application/javascript" src="src/surf/locations/model/marineObs.js"></script>
-    <script type="application/javascript" src="src/surf/locations/service/marineObsService.js"></script>
+    <script type="application/javascript" src="src/surf/locations/model/location.js"></script>
+    <script type="application/javascript" src="src/surf/locations/model/locations.js"></script>
+    <script type="application/javascript" src="src/surf/locations/service/locationDataService.js"></script>
     <script type="application/javascript" src="src/index.js"></script>
 </head>
 <body onload="whenPageHasLoaded()">
@@ -21,12 +21,8 @@
 </div>
 
 <h3>Locations</h3>
-<ul id="locations">
-    <li><a href="#saunton">Saunton</a></li>
-    <li><a href="#croyde">Croyde</a></li>
-    <li><a href="#k2">K2 bouy</a> (south west of Ireland)</li>
-    <li><a href="#brittany">Brittany buoy</a> (east of France)</li>
-    <li>Lynemouth</li>
+<ul id="locations" class="nav nav-pills">
+    <li><a href="#k2">K2 bouy</a> (south west of ireland)</li>
 </ul>
 
 <a name="saunton"></a>
@@ -41,6 +37,7 @@
     <!--<iframe src="http://magicseaweed.com//Live-Croyde-Beach-Webcam/19/Embed/" width="780" height="439" frameborder="0"></iframe>-->
 </div>
 
+<a name="k2"><h4>K2 buoy (south west of ireland)</h4></a>
 <div id="k2" class="row">
     <a name="k2"></a>
     <div id="chart-162081" class="col-md-12" style="height:400px;"></div>

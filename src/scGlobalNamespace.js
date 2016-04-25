@@ -1,7 +1,7 @@
 var SurfCrew = SurfCrew || {};
 SurfCrew.events = {
     latestMarineObsLoadedEvent: "latestMarineObsLoadedEvent",
-    latestMarineObsUpdatedEvent: "latestMarineObsUpdatedEvent"
+    latestLocationDataChangedEvent: "latestLocationDataChangedEvent"
 };
 SurfCrew.highcharts = {
     data: {
@@ -43,7 +43,7 @@ SurfCrew.highcharts = {
                 data: []
             };
             var windSpeed = {
-                type: 'column',
+                type: 'spline',
                 name: 'Wind speed (kn)',
                 data: []
             };
