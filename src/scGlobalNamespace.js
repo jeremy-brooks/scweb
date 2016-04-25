@@ -1,6 +1,6 @@
 var SurfCrew = SurfCrew || {};
 SurfCrew.events = {
-    latestMarineObsLoadedEvent: "latestMarineObsLoadedEvent",
+    latestRawDataLoadedEvent: "latestRawDataLoadedEvent",
     latestLocationDataChangedEvent: "latestLocationDataChangedEvent"
 };
 SurfCrew.highcharts = {

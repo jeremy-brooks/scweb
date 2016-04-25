@@ -3,16 +3,11 @@
  */
 function whenPageHasLoaded() {
     $('[data-toggle="popover"]').popover();
-    var marineObsModel = new MarineObs();
-    var marineObsService = new MarineObsService();
-    addEventListener(SurfCrew.events.latestMarineObsUpdatedEvent, bootstrapLatestObs);
-    marineObsService.getLatestObs("http://datapoint.metoffice.gov.uk/public/data/val/wxmarineobs/all/json/162081?res=hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848");
-    marineObsService.getLatestObs("http://datapoint.metoffice.gov.uk/public/data/val/wxmarineobs/all/json/162163?res=hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848");
-
     new Locations();
-    var marineObsService = new LocationDataService();
+    var locationDataService = new LocationDataService();
     addEventListener(SurfCrew.events.latestLocationDataChangedEvent, bootstrapLocationDataWithChart);
-    marineObsService.getLatestObs();
+    locationDataService.getLatestData("http://datapoint.metoffice.gov.uk/public/data/val/wxmarineobs/all/json/162081?res=hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848");
+    locationDataService.getLatestData("http://datapoint.metoffice.gov.uk/public/data/val/wxmarineobs/all/json/162163?res=hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848");
 }
 function bootstrapLocationDataWithChart(event) {
     if (event && event.detail && event.detail instanceof Location) {
@@ -22,7 +17,7 @@ function bootstrapLocationDataWithChart(event) {
                 type: 'column'
             },
             title: {
-                text: loc.name + ' buoy data'
+                text: location.name + ' buoy data'
             },
             plotOptions: {
                 column: {
@@ -36,8 +31,8 @@ function bootstrapLocationDataWithChart(event) {
                     enableMouseTracking: false
                 }
             },
-            xAxis: location.getLatestObs().xAxis,
-            series: location.getLatestObs().series
+            xAxis: location.getLatestData().xAxis,
+            series: location.getLatestData().series
         };
         $("#chart-"+location.id).highcharts(chartOptions);
     }

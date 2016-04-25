@@ -12,6 +12,6 @@ Location.prototype.setLatestObs = function (obs) {
     locationDataChangedEvent.initCustomEvent(SurfCrew.events.latestLocationDataChangedEvent, true, true, this);
     dispatchEvent(locationDataChangedEvent);
 };
-Location.prototype.getLatestObs = function () {
+Location.prototype.getLatestData = function () {
     return this._latestObs;
 };
