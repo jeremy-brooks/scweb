@@ -7,6 +7,9 @@ var Location = function (id, name) {
     this._latestObs = null;
 };
 Location.prototype.setLatestObs = function (obs) {
+    obs.title = {
+        text: this.name + ' buoy data'
+    };
     this._latestObs = obs;
     var locationDataChangedEvent = document.createEvent("CustomEvent");
     locationDataChangedEvent.initCustomEvent(SurfCrew.events.latestLocationDataChangedEvent, true, true, this);

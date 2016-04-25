@@ -12,28 +12,6 @@ function whenPageHasLoaded() {
 function bootstrapLocationDataWithChart(event) {
     if (event && event.detail && event.detail instanceof Location) {
         var location = event.detail;
-        var chartOptions = {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: location.name + ' buoy data'
-            },
-            plotOptions: {
-                column: {
-                    groupPadding: 0,
-                    shadow: false
-                },
-                spline: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                    enableMouseTracking: false
-                }
-            },
-            xAxis: location.getLatestData().xAxis,
-            series: location.getLatestData().series
-        };
-        $("#chart-"+location.id).highcharts(chartOptions);
+        $("#chart-"+location.id).highcharts(location.getLatestData());
     }
 }
