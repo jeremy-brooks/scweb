@@ -43,7 +43,7 @@ SurfCrew.highcharts = {
                 data: []
             };
             var windSpeed = {
-                type: 'column',
+                type: 'spline',
                 name: 'Wind speed (kn)',
                 data: []
             };

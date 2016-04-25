@@ -21,6 +21,12 @@ function bootstrapLatestObs(event) {
                     column: {
                         groupPadding: 0,
                         shadow: false
+                    },
+                    spline: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
                     }
                 },
                 yAxis: {
