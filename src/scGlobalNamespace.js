@@ -93,9 +93,9 @@ SurfCrew.highcharts = {
                 var reportForDate = period.value;
                 var reportData = period.Rep;
                 for (var dataIndex = 0, locData = null; locData = reportData[dataIndex]; dataIndex++) {
-                    waveHeight.data.push(Number(locData.Wh));
-                    wavePeriod.data.push(Number(locData.Wp));
-                    windSpeed.data.push(Number(locData.S));
+                    waveHeight.data.push(Number(locData.Wh) || NaN);
+                    wavePeriod.data.push(Number(locData.Wp) || NaN);
+                    windSpeed.data.push(Number(locData.S) || NaN);
                 }
             }
             

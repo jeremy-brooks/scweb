@@ -1,0 +1,20 @@
+[
+  {
+    "elevation": "0.0",
+    "id": "354507",
+    "latitude": "51.1308",
+    "longitude": "-4.2402",
+    "name": "Croyde (Beach)",
+    "region": "sw",
+    "unitaryAuthArea": "Devon"
+  },
+  {
+    "elevation": "0.0",
+    "id": "354533",
+    "latitude": "50.4467",
+    "longitude": "-5.0426",
+    "name": "Watergate Bay (Beach)",
+    "region": "sw",
+    "unitaryAuthArea": "Cornwall"
+  }
+]
