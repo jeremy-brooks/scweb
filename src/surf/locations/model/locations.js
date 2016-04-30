@@ -18,7 +18,9 @@ Locations.prototype.getLocationById = function (locId) {
     }
 };
 Locations.prototype.setLocationData = function (locationData) {
-    this.getLocationById(locationData.siteId).setLatestObs(locationData);
+    if (locationData && locationData.siteId){
+        this.getLocationById(locationData.siteId).setLatestObs(locationData);
+    }
 };
 Locations.prototype.listenForLatestObsData = function (listener, responder) {
     listener.addEventListener(SurfCrew.events.latestRawDataLoadedEvent, function (data) {

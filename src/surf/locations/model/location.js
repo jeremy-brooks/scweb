@@ -8,7 +8,7 @@ var Location = function (id, name) {
 };
 Location.prototype.setLatestObs = function (obs) {
     obs.title = {
-        text: this.name + ' buoy data'
+        text: this.name
     };
     this._latestObs = obs;
     var locationDataChangedEvent = document.createEvent("CustomEvent");
