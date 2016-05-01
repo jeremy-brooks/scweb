@@ -12,7 +12,7 @@ function whenPageHasLoaded() {
     locationDataService.getLatestData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354533?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848");
 }
 function bootstrapLocationDataWithChart(event) {
-    if (event && event.detail && event.detail instanceof Location) {
+    if (event && event.detail && event.detail instanceof OldLocation) {
         var location = event.detail;
         $("#chart-"+location.id).highcharts(location.getLatestData());
     }
@@ -23,7 +23,7 @@ function createHybridChart(){
     http.onreadystatechange = function () {
         if (http.readyState === 4 && http.status === 200){
             var parsedData = JSON.parse(http.responseText);
-            var location = new ForecastLocation(parsedData);
+            var location = new DataPointLocation(parsedData);
         }
     };
     http.open("GET", url, true);

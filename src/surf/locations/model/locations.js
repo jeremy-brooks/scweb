@@ -3,10 +3,10 @@
  */
 var Locations = function () {
     this.locations = [
-        new Location("162081", "K2"),
-        new Location("162163", "Brittany"),
-        new Location("354507", "Croyde"),
-        new Location("354533", "Watergate Bay")
+        new OldLocation("162081", "K2"),
+        new OldLocation("162163", "Brittany"),
+        new OldLocation("354507", "Croyde"),
+        new OldLocation("354533", "Watergate Bay")
     ];
     this.listenForLatestObsData(window, this);
 };
