@@ -18,7 +18,7 @@ function bootstrapLocationDataWithChart(event) {
     }
 }
 function createHybridChart(){
-    var url = locationDataService.getLatestData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354507?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848");
+    var url = "http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354507?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848";
     var http = new XMLHttpRequest();
     http.onreadystatechange = function () {
         if (http.readyState === 4 && http.status === 200){

@@ -4,17 +4,21 @@
 var ForecastLocation = function () {
     this.id = "";
     this.name = "none";
+    this.lastTimeDataChanged = null;
     this.dataSeries = null;
 
     (function (data) {
         var locationData = null;
+        var metaData = null;
         if (data){
             if (data.SiteRep){
                 if (data.SiteRep.DV && data.SiteRep.DV.Location){
                     try {
+                        metaData = data.SiteRep.DV;
                         locationData = data.SiteRep.DV.Location;
                         this.id = locationData.i;
                         this.name = locationData.name;
+                        this.dataDate = metaData.dataDate;
                     } catch (error) {
                         console.error("Something went wrong getting location detail from data|" + error);
                     }
