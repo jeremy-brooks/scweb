@@ -8,13 +8,14 @@ var DataPointLocation = function () {
     this.dataDate = null;
     this.seriesData = null;
     this.weatherParametersAvailable = null;
+    this.options = null;
 
     (function (data) {
         var locationData = null;
         var metaData = null;
         var period = null;
 
-        if (this.isDataValid(data)){
+        if (this.isDataValid(data)) {
             try {
                 metaData = data.SiteRep.DV;
                 locationData = data.SiteRep.DV.Location;
@@ -26,36 +27,51 @@ var DataPointLocation = function () {
                 this.weatherParametersAvailable = data.SiteRep.Wx.Param;
                 this.seriesData = [];
 
-                for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++){
-                    if (param.name !== "V" && param.name !== "D"){
+                for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++) {
+                    if (param.name !== "V" && param.name !== "D" && param.name !== "W") {
                         this.seriesData.push({
                             units: param.units,
                             type: 'spline',
-                            name: param.name,
+                            id: param.name,
+                            name: param.$,
                             data: []
                         });
                     }
                 }
 
-                for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++){
+                for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++) {
 
-                    if (dataItem.Rep){
-                        for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++){
+                    if (dataItem.Rep) {
+                        for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++) {
                             var xDate = null;
-                            for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++){
+                            for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++) {
                                 xDate = Date.parse(dataItem.value);
-                                var xTime = Number(rep.$)*3600*1000;
+                                var xTime = Number(rep.$) * 3600 * 1000;
                                 xDate += xTime;
-                                if (rep[series.name]){
-                                    series.data.push(Number(rep[series.name]));
+                                if (rep[series.id]) {
+                                    series.data.push(Number(rep[series.id]));
                                 }
                             }
                         }
                     }
-
                 }
 
-                var a = null;
+                this.options = {
+                    series: this.seriesData,
+                    tooltip: {
+                        crosshairs: true,
+                        shared: true,
+                        formatter: function () {
+                            var tooltip = "<b>Date: " + this.x + "</b>";
+                            for (var pointIndex = 0, point = null; point = this.points[pointIndex]; pointIndex++){
+                                tooltip += "<br/><span>";
+                                tooltip += point.series.name + ": " + point.y + point.series.userOptions.units;
+                                tooltip += "</span>"
+                            }
+                            return tooltip;
+                        }
+                    }
+                };
 
             } catch (error) {
                 console.error("Something went wrong getting location detail from data|" + error);
@@ -64,9 +80,9 @@ var DataPointLocation = function () {
     }).apply(this, arguments);
 };
 DataPointLocation.prototype.isDataValid = function (data) {
-    if (data){
-        if (data.SiteRep){
-            if (data.SiteRep.DV && data.SiteRep.Wx && data.SiteRep.Wx.Param && data.SiteRep.DV.Location){
+    if (data) {
+        if (data.SiteRep) {
+            if (data.SiteRep.DV && data.SiteRep.Wx && data.SiteRep.Wx.Param && data.SiteRep.DV.Location) {
                 return true;
             } else {
                 console.warn("No location found in DV");

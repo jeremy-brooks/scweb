@@ -11,10 +11,7 @@ function createHybridChart(){
         if (http.readyState === 4 && http.status === 200){
             var parsedData = JSON.parse(http.responseText);
             var location = new DataPointLocation(parsedData);
-            var options = {
-                series: location.seriesData
-            };
-            $("#chart-hybrid").highcharts(options);
+            $("#chart-hybrid").highcharts(location.options);
         }
     };
     http.open("GET", url, true);
