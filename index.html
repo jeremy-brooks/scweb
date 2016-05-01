@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>surf crew</title>
-
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.css">
-
+    <link rel="stylesheet" href="css/main.css">
     <script type="application/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+    <script type="application/javascript" src="node_modules/highcharts/highcharts.js"></script>
     <script type="application/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
-
-    <script type="application/javascript" src="src/surf/locations/load/SurfLocationsLoader.js"></script>
+    <script type="application/javascript" src="src/scGlobalNamespace.js"></script>
+    <script type="application/javascript" src="src/surf/locations/model/location.js"></script>
+    <script type="application/javascript" src="src/surf/locations/model/oldLocation.js"></script>
+    <script type="application/javascript" src="src/surf/locations/model/locations.js"></script>
+    <script type="application/javascript" src="src/surf/locations/service/locationDataService.js"></script>
     <script type="application/javascript" src="src/index.js"></script>
 </head>
 <body onload="whenPageHasLoaded()">
@@ -19,9 +21,16 @@
     <h1>Surf Crew</h1>
 </div>
 
-<h3>Locations</h3>
-<ul id="locations" class="list-group">
-    <li class="list-group-item">loading...</li>
-</ul>
+<div class="row">
+    <a name="chart1"></a>
+    <div id="chart1" class="col-md-12" style="height:400px;"></div>
+    <a name="chart2"></a>
+    <div id="chart2" class="col-md-12" style="height:400px;"></div>
+    <a name="chart3"></a>
+    <div id="chart3" class="col-md-12" style="height:400px;"></div>
+    <a name="chart4"></a>
+    <div id="chart4" class="col-md-12" style="height:400px;"></div>
+</div>
+
 </body>
 </html>

@@ -4,7 +4,9 @@
   "description": "Surf Crew website",
   "main": "index.js",
   "dependencies": {
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "highcharts": "^4.2.4",
+    "jquery": "^2.2.3"
   },
   "devDependencies": {},
   "scripts": {
