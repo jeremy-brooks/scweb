@@ -28,7 +28,7 @@ var DataPointLocation = function () {
                 this.seriesData = [];
 
                 for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++) {
-                    if (param.name !== "V" && param.name !== "D" && param.name !== "W") {
+                    if (param.name !== "V" && param.name !== "D" && param.name !== "W" && param.name !== "P") {
                         this.seriesData.push({
                             yAxis: (param.name === "H" || param.name === "Pp") ? 1 : 0,
                             units: param.units,
