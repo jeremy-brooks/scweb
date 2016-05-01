@@ -17,3 +17,18 @@ function bootstrapLocationDataWithChart(event) {
         $("#chart-"+location.id).highcharts(location.getLatestData());
     }
 }
+function createHybridChart(){
+    var http = new XMLHttpRequest();
+    http.onreadystatechange = function () {
+        if (http.readyState === 4 && http.status === 200){
+            var parsedData = JSON.parse(http.responseText);
+            var locationId = getLocationIdFromData(parsedData);
+            var locationName = getLocationNameFromData(parsedData);
+            var locationDataSeries = getLocationDataSeriesFromData(parsedData);
+            var location = 
+            addLocationDataToChart()
+        }
+    };
+    http.open("GET", url, true);
+    http.send();
+}
