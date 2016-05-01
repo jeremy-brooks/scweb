@@ -30,6 +30,7 @@ var DataPointLocation = function () {
                 for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++) {
                     if (param.name !== "V" && param.name !== "D" && param.name !== "W") {
                         this.seriesData.push({
+                            yAxis: (param.name === "H" || param.name === "Pp")? 1 : 0,
                             units: param.units,
                             type: 'spline',
                             id: param.name,
@@ -65,12 +66,29 @@ var DataPointLocation = function () {
                             var tooltip = "<b>Date: " + this.x + "</b>";
                             for (var pointIndex = 0, point = null; point = this.points[pointIndex]; pointIndex++){
                                 tooltip += "<br/><span>";
-                                tooltip += point.series.name + ": " + point.y + point.series.userOptions.units;
+                                tooltip += point.series.name + ": <b>" + point.y + point.series.userOptions.units + "</b>";
                                 tooltip += "</span>"
                             }
                             return tooltip;
                         }
-                    }
+                    },
+                    yAxis: [{ //--- Primary yAxis
+                        title: {
+                            text: null
+                        }
+                    }, { //--- Secondary yAxis
+                        title: {
+                            text: null
+                        },
+                        labels: {
+                            formatter: function () {
+                                return this.value + "%";
+                            }
+                        },
+                        opposite: true,
+                        max: 100,
+                        min: 0
+                    }]
                 };
 
             } catch (error) {
