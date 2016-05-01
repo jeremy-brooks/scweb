@@ -6,6 +6,8 @@ var DataPointLocation = function () {
     this.name = "unknown";
     this.type = "unknown";
     this.dataDate = null;
+    this.data = null;
+    this.weatherParametersAvailable = null;
     this.dataSeries = null;
 
     (function (data) {
@@ -14,7 +16,7 @@ var DataPointLocation = function () {
         var data = null;
         if (data){
             if (data.SiteRep){
-                if (data.SiteRep.DV && data.SiteRep.DV.Location){
+                if (data.SiteRep.DV && data.SiteRep.Wx && data.SiteRep.DV.Location){
                     try {
                         metaData = data.SiteRep.DV;
                         locationData = data.SiteRep.DV.Location;
@@ -23,11 +25,26 @@ var DataPointLocation = function () {
                         this.name = locationData.name;
                         this.dataDate = metaData.dataDate;
                         this.type = metaData.type;
+                        this.weatherParametersAvailable = data.SiteRep.Wx.Param;
+                        this.data = [];
 
                         for (var dataIndex = 0, dataItem = null; dataItem = data[dataIndex]; dataIndex++){
                             if (dataItem.Rep){
                                 for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++){
-                                    
+                                    for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++){
+                                        if (rep[param.name]){
+                                            this.data.push({
+                                                x: dataItem.value,
+                                                y: param.name,
+                                                name: param.$
+                                            });
+                                        }
+                                    }
+                                    // var dataPoint = {
+                                    //     x: dataItem.value,
+                                    //     y: rep
+                                    // };
+                                    // this.data.push[dataPoint];
                                 }
                             }
                         }
