@@ -15,6 +15,9 @@ function createHybridChart(){
                 chart: {
                     type: 'spline'
                 },
+                xAxis: {
+                    type: "datetime"
+                },
                 series: location.seriesData
             };
             $("#chart-hybrid").highcharts(options);

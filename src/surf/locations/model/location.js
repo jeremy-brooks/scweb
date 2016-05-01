@@ -31,18 +31,23 @@ var DataPointLocation = function () {
                         units: param.units,
                         type: 'spline',
                         name: param.name,
-                        data: [],
-                        turboThreshold: 0
+                        data: []
                     });
+                    break;
                 }
 
                 for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++){
+
                     if (dataItem.Rep){
                         for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++){
+                            var xDate = null;
                             for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++){
+                                xDate = Date.parse(dataItem.value);
+                                var xTime = Number(rep.$)*3600*1000;
+                                xDate += xTime;
                                 if (rep[series.name]){
                                     series.data.push({
-                                        x: Date.parse(dataItem.value),
+                                        x: xDate,
                                         y: Number(rep[series.name])
                                     });
                                 }
