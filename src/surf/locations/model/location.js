@@ -27,13 +27,14 @@ var DataPointLocation = function () {
                 this.seriesData = [];
 
                 for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++){
-                    this.seriesData.push({
-                        units: param.units,
-                        type: 'spline',
-                        name: param.name,
-                        data: []
-                    });
-                    break;
+                    if (param.name !== "V" && param.name !== "D"){
+                        this.seriesData.push({
+                            units: param.units,
+                            type: 'spline',
+                            name: param.name,
+                            data: []
+                        });
+                    }
                 }
 
                 for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++){
@@ -46,14 +47,12 @@ var DataPointLocation = function () {
                                 var xTime = Number(rep.$)*3600*1000;
                                 xDate += xTime;
                                 if (rep[series.name]){
-                                    series.data.push({
-                                        x: xDate,
-                                        y: Number(rep[series.name])
-                                    });
+                                    series.data.push(Number(rep[series.name]));
                                 }
                             }
                         }
                     }
+
                 }
 
                 var a = null;

@@ -12,12 +12,6 @@ function createHybridChart(){
             var parsedData = JSON.parse(http.responseText);
             var location = new DataPointLocation(parsedData);
             var options = {
-                chart: {
-                    type: 'spline'
-                },
-                xAxis: {
-                    type: "datetime"
-                },
                 series: location.seriesData
             };
             $("#chart-hybrid").highcharts(options);
