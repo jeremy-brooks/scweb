@@ -30,7 +30,7 @@ var DataPointLocation = function () {
                 for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++) {
                     if (param.name !== "V" && param.name !== "D" && param.name !== "W") {
                         this.seriesData.push({
-                            yAxis: (param.name === "H" || param.name === "Pp")? 1 : 0,
+                            yAxis: (param.name === "H" || param.name === "Pp") ? 1 : 0,
                             units: param.units,
                             type: 'spline',
                             id: param.name,
@@ -58,13 +58,16 @@ var DataPointLocation = function () {
                 }
 
                 this.options = {
+                    title: {
+                        text: this.name
+                    },
                     series: this.seriesData,
                     tooltip: {
                         crosshairs: true,
                         shared: true,
                         formatter: function () {
                             var tooltip = "<b>Date: " + this.x + "</b>";
-                            for (var pointIndex = 0, point = null; point = this.points[pointIndex]; pointIndex++){
+                            for (var pointIndex = 0, point = null; point = this.points[pointIndex]; pointIndex++) {
                                 tooltip += "<br/><span>";
                                 tooltip += point.series.name + ": <b>" + point.y + point.series.userOptions.units + "</b>";
                                 tooltip += "</span>"
