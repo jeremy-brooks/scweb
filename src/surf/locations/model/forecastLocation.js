@@ -3,8 +3,9 @@
  */
 var ForecastLocation = function () {
     this.id = "";
-    this.name = "none";
-    this.lastTimeDataChanged = null;
+    this.name = "unknown";
+    this.type = "unknown";
+    this.dataDate = null;
     this.dataSeries = null;
 
     (function (data) {
@@ -19,6 +20,7 @@ var ForecastLocation = function () {
                         this.id = locationData.i;
                         this.name = locationData.name;
                         this.dataDate = metaData.dataDate;
+                        this.type = metaData.type;
                     } catch (error) {
                         console.error("Something went wrong getting location detail from data|" + error);
                     }
