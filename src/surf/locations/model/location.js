@@ -68,7 +68,7 @@ var DataPointLocation = function () {
                         formatter: function () {
                             var tooltip = "<b>Date: " + this.x + "</b>";
                             for (var pointIndex = 0, point = null; point = this.points[pointIndex]; pointIndex++) {
-                                tooltip += "<br/><span>";
+                                tooltip += '<br/><span style="color: ' + point.color + ';">';
                                 tooltip += point.series.name + ": <b>" + point.y + point.series.userOptions.units + "</b>";
                                 tooltip += "</span>"
                             }
@@ -115,4 +115,53 @@ DataPointLocation.prototype.isDataValid = function (data) {
         console.warn("No data found to set new location");
     }
     return false;
+};
+DataPointLocation.prototype.addForecastDataToSeries = function (data) {
+    var seriesAlreadyExists = false;
+    if (this.seriesData && this.weatherParametersAvailable){
+        if (this.isDataValid(data)){
+            var metaData = data.SiteRep.DV;
+            var locationData = data.SiteRep.DV.Location;
+            var period = locationData.Period;
+            // add any missing series objects
+            var newWeatherParameters = data.SiteRep.Wx.Param;
+            for (var newParamIndex = 0, newParam = null; newParam = newWeatherParameters[paramIndex]; newParamIndex++) {
+                if (newParam.name !== "V" && newParam.name !== "D" && newParam.name !== "W" && newParam.name !== "P") {
+
+                    for (var paramIndex = 0, param = null; param = newWeatherParameters[paramIndex]; paramIndex++){
+                        if (newParam.name === param.name){
+                            seriesAlreadyExists = true;
+                            break;
+                        }
+                    }
+
+                    if (!seriesAlreadyExists){
+                        this.seriesData.push({
+                            yAxis: (newParam.name === "H" || newParam.name === "Pp") ? 1 : 0,
+                            units: newParam.units,
+                            type: 'spline',
+                            id: newParam.name,
+                            name: newParam.$,
+                            data: []
+                        });
+                        seriesAlreadyExists = false;
+                    }
+
+                }
+            }
+
+            // for each rep
+            //   get the matching series
+            //   push data points into its data array
+        }
+    } else {
+
+    }
+};
+DataPointLocation.prototype.addObservationDataToSeries = function () {
+    if (this.seriesData){
+
+    } else {
+
+    }
 };
