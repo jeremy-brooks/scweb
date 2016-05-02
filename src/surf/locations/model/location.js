@@ -116,52 +116,66 @@ DataPointLocation.prototype.isDataValid = function (data) {
     }
     return false;
 };
-DataPointLocation.prototype.addForecastDataToSeries = function (data) {
+DataPointLocation.prototype.pushDataIntoSeries = function (data) {
     var seriesAlreadyExists = false;
-    if (this.seriesData && this.weatherParametersAvailable){
-        if (this.isDataValid(data)){
-            var metaData = data.SiteRep.DV;
-            var locationData = data.SiteRep.DV.Location;
-            var period = locationData.Period;
-            // add any missing series objects
-            var newWeatherParameters = data.SiteRep.Wx.Param;
-            for (var newParamIndex = 0, newParam = null; newParam = newWeatherParameters[paramIndex]; newParamIndex++) {
-                if (newParam.name !== "V" && newParam.name !== "D" && newParam.name !== "W" && newParam.name !== "P") {
+    var locationData = null;
+    var metaData = null;
+    var period = null;
+    var newWeatherParameters = null;
 
-                    for (var paramIndex = 0, param = null; param = newWeatherParameters[paramIndex]; paramIndex++){
-                        if (newParam.name === param.name){
-                            seriesAlreadyExists = true;
-                            break;
+    if (this.isDataValid(data) && this.seriesData && this.weatherParametersAvailable) {
+
+        metaData = data.SiteRep.DV;
+        locationData = data.SiteRep.DV.Location;
+        period = locationData.Period;
+        // add any missing series objects
+        newWeatherParameters = data.SiteRep.Wx.Param;
+
+        for (var newParamIndex = 0, newParam = null; newParam = newWeatherParameters[paramIndex]; newParamIndex++) {
+            if (newParam.name !== "V" && newParam.name !== "D" && newParam.name !== "W" && newParam.name !== "P") {
+
+                for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++) {
+                    if (newParam.name === param.name) {
+                        seriesAlreadyExists = true;
+                        break;
+                    }
+                }
+
+                if (!seriesAlreadyExists) {
+                    this.seriesData.push({
+                        yAxis: (newParam.name === "H" || newParam.name === "Pp") ? 1 : 0,
+                        units: newParam.units,
+                        type: 'spline',
+                        id: newParam.name,
+                        name: newParam.$,
+                        data: []
+                    });
+                    seriesAlreadyExists = false;
+                }
+
+            }
+        }
+
+        // for each rep
+        //   get the matching series
+        //   push data points into its data array
+        for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++) {
+            if (dataItem.Rep) {
+                for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++) {
+                    var xDate = null;
+                    for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++) {
+                        xDate = Date.parse(dataItem.value);
+                        var xTime = Number(rep.$) * 3600 * 1000;
+                        xDate += xTime;
+                        if (rep[series.id]) {
+                            series.data.push(Number(rep[series.id]));
                         }
                     }
-
-                    if (!seriesAlreadyExists){
-                        this.seriesData.push({
-                            yAxis: (newParam.name === "H" || newParam.name === "Pp") ? 1 : 0,
-                            units: newParam.units,
-                            type: 'spline',
-                            id: newParam.name,
-                            name: newParam.$,
-                            data: []
-                        });
-                        seriesAlreadyExists = false;
-                    }
-
                 }
             }
-
-            // for each rep
-            //   get the matching series
-            //   push data points into its data array
         }
+        
     } else {
-
-    }
-};
-DataPointLocation.prototype.addObservationDataToSeries = function () {
-    if (this.seriesData){
-
-    } else {
-
+        console.warn("Data was invalid or location has not been constructed with data.");
     }
 };
