@@ -116,6 +116,10 @@ DataPointLocation.prototype.isDataValid = function (data) {
     }
     return false;
 };
+DataPointLocation.prototype.setAdditionalName = function (additionalName) {
+    this.name += " | " + additionalName;
+    this.options.title.text = this.name;
+};
 DataPointLocation.prototype.pushDataIntoSeries = function (data) {
     var seriesAlreadyExists = false;
     var locationData = null;
@@ -130,6 +134,8 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
         period = locationData.Period;
         // add any missing series objects
         newWeatherParameters = data.SiteRep.Wx.Param;
+
+        this.setAdditionalName(locationData.name);
 
         for (var newParamIndex = 0, newParam = null; newParam = newWeatherParameters[paramIndex]; newParamIndex++) {
             if (newParam.name !== "V" && newParam.name !== "D" && newParam.name !== "W" && newParam.name !== "P") {
