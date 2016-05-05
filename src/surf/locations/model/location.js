@@ -137,7 +137,7 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
 
         this.setAdditionalName(locationData.name);
 
-        for (var newParamIndex = 0, newParam = null; newParam = newWeatherParameters[paramIndex]; newParamIndex++) {
+        for (var newParamIndex = 0, newParam = null; newParam = newWeatherParameters[newParamIndex]; newParamIndex++) {
             if (newParam.name !== "V" && newParam.name !== "D" && newParam.name !== "W" && newParam.name !== "P") {
 
                 for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++) {
