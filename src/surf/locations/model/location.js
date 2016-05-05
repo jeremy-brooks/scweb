@@ -120,6 +120,14 @@ DataPointLocation.prototype.setAdditionalName = function (additionalName) {
     this.name += " | " + additionalName;
     this.options.title.text = this.name;
 };
+DataPointLocation.prototype.createEmptyValues = function (numberToCreate) {
+    var array = [];
+    while (numberToCreate > 0){
+        numberToCreate--;
+        array.push(NaN);
+    }
+    return array;
+};
 DataPointLocation.prototype.pushDataIntoSeries = function (data) {
     var seriesAlreadyExists = false;
     var locationData = null;
@@ -128,6 +136,8 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
     var newWeatherParameters = null;
 
     if (this.isDataValid(data) && this.seriesData && this.weatherParametersAvailable) {
+
+        var numberOfDataPointsInFirstSeries = this.seriesData[0].data.length;
 
         metaData = data.SiteRep.DV;
         locationData = data.SiteRep.DV.Location;
@@ -154,7 +164,7 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
                         type: 'spline',
                         id: newParam.name,
                         name: newParam.$,
-                        data: []
+                        data: [] //this.createEmptyValues(numberOfDataPointsInFirstSeries)
                     });
                     seriesAlreadyExists = false;
                 }
