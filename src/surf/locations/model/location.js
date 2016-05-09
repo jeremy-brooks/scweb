@@ -49,8 +49,9 @@ var DataPointLocation = function () {
                                 xDate = Date.parse(dataItem.value);
                                 var xTime = Number(rep.$) * 3600 * 1000;
                                 xDate += xTime;
+                                var newXDate = new Date(xDate);
                                 if (rep[series.id]) {
-                                    series.data.push(Number(rep[series.id]));
+                                    series.data.push([Date.UTC(newXDate.getYear(), newXDate.getMonth(), newXDate.getDate(), newXDate.getHours()), Number(rep[series.id])]);
                                 }
                             }
                         }
@@ -91,7 +92,10 @@ var DataPointLocation = function () {
                         opposite: true,
                         max: 100,
                         min: 0
-                    }]
+                    }],
+                    xAxis: {
+                        type: "datetime"
+                    }
                 };
 
             } catch (error) {
@@ -120,14 +124,7 @@ DataPointLocation.prototype.setAdditionalName = function (additionalName) {
     this.name += " | " + additionalName;
     this.options.title.text = this.name;
 };
-DataPointLocation.prototype.createEmptyValues = function (numberToCreate) {
-    var array = [];
-    while (numberToCreate > 0){
-        numberToCreate--;
-        array.push(NaN);
-    }
-    return array;
-};
+
 DataPointLocation.prototype.pushDataIntoSeries = function (data) {
     var seriesAlreadyExists = false;
     var locationData = null;
@@ -164,7 +161,7 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
                         type: 'spline',
                         id: newParam.name,
                         name: newParam.$,
-                        data: [] //this.createEmptyValues(numberOfDataPointsInFirstSeries)
+                        data: []
                     });
                     seriesAlreadyExists = false;
                 }
@@ -183,8 +180,9 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
                         xDate = Date.parse(dataItem.value);
                         var xTime = Number(rep.$) * 3600 * 1000;
                         xDate += xTime;
+                        var newXDate = new Date(xDate);
                         if (rep[series.id]) {
-                            series.data.push(Number(rep[series.id]));
+                            series.data.push([Date.UTC(newXDate.getYear(), newXDate.getMonth(), newXDate.getDate(), newXDate.getHours()), Number(rep[series.id])]);
                         }
                     }
                 }
