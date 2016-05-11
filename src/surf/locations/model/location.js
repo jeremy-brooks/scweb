@@ -46,12 +46,9 @@ var DataPointLocation = function () {
                         for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++) {
                             var xDate = null;
                             for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++) {
-                                xDate = Date.parse(dataItem.value);
-                                var xTime = Number(rep.$) * 3600 * 1000;
-                                xDate += xTime;
-                                var newXDate = new Date(xDate);
+                                var date = new Date(dataItem.value);
                                 if (rep[series.id]) {
-                                    series.data.push([Date.UTC(newXDate.getYear(), newXDate.getMonth(), newXDate.getDate(), newXDate.getHours()), Number(rep[series.id])]);
+                                    series.data.push([date.getTime() + (Number(rep.$)*36000), Number(rep[series.id])]);
                                 }
                             }
                         }
@@ -67,7 +64,7 @@ var DataPointLocation = function () {
                         crosshairs: true,
                         shared: true,
                         formatter: function () {
-                            var tooltip = "<b>Date: " + this.x + "</b>";
+                            var tooltip = "<b>" + new Date(this.x) + "</b>";
                             for (var pointIndex = 0, point = null; point = this.points[pointIndex]; pointIndex++) {
                                 tooltip += '<br/><span style="color: ' + point.color + ';">';
                                 tooltip += point.series.name + ": <b>" + point.y + point.series.userOptions.units + "</b>";
@@ -92,7 +89,7 @@ var DataPointLocation = function () {
                         opposite: true,
                         max: 100,
                         min: 0
-                    }],
+                     }],
                     xAxis: {
                         type: "datetime"
                     }
@@ -177,12 +174,9 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
                 for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++) {
                     var xDate = null;
                     for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++) {
-                        xDate = Date.parse(dataItem.value);
-                        var xTime = Number(rep.$) * 3600 * 1000;
-                        xDate += xTime;
-                        var newXDate = new Date(xDate);
+                        var date = new Date(dataItem.value);
                         if (rep[series.id]) {
-                            series.data.push([Date.UTC(newXDate.getYear(), newXDate.getMonth(), newXDate.getDate(), newXDate.getHours()), Number(rep[series.id])]);
+                            series.data.push([date.getTime() + (Number(rep.$)*36000), Number(rep[series.id])]);
                         }
                     }
                 }
