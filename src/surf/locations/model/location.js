@@ -48,7 +48,7 @@ var DataPointLocation = function () {
                             for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++) {
                                 var date = new Date(dataItem.value);
                                 if (rep[series.id]) {
-                                    series.data.push([date.getTime() + (Number(rep.$)*36000), Number(rep[series.id])]);
+                                    series.data.push([date.getTime() + (Number(rep.$)* (60 * 60 * 1000)), Number(rep[series.id])]);
                                 }
                             }
                         }
@@ -100,6 +100,10 @@ var DataPointLocation = function () {
             }
         }
     }).apply(this, arguments);
+};
+DataPointLocation.prototype.addHoursToDate = function(hours, date){
+    date.setTime(date.getTime()+(hours*3600));
+    return date;
 };
 DataPointLocation.prototype.isDataValid = function (data) {
     if (data) {
@@ -176,7 +180,7 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
                     for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++) {
                         var date = new Date(dataItem.value);
                         if (rep[series.id]) {
-                            series.data.push([date.getTime() + (Number(rep.$)*36000), Number(rep[series.id])]);
+                            series.data.push([date.getTime() + (Number(rep.$)* (60 * 60 * 1000)), Number(rep[series.id])]);
                         }
                     }
                 }
