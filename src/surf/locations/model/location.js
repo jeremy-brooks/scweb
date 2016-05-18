@@ -48,7 +48,7 @@ var DataPointLocation = function () {
                             for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++) {
                                 var date = new Date(dataItem.value);
                                 if (rep[series.id]) {
-                                    series.data.push([date.getTime() + (Number(rep.$)* (60 * 60 * 1000)), Number(rep[series.id])]);
+                                    series.data.push([date.getTime() + (Number(rep.$)* 60 * 1000), Number(rep[series.id])]);
                                 }
                             }
                         }
@@ -180,7 +180,7 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
                     for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++) {
                         var date = new Date(dataItem.value);
                         if (rep[series.id]) {
-                            series.data.push([date.getTime() + (Number(rep.$)* (60 * 60 * 1000)), Number(rep[series.id])]);
+                            series.data.push([date.getTime() + (Number(rep.$)* 60 * 1000), Number(rep[series.id])]);
                         }
                     }
                 }
