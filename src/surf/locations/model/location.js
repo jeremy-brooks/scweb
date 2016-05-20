@@ -13,13 +13,13 @@ var DataPointLocation = function () {
     (function (data) {
         if (this.isDataValid(data)) {
             try {
-                this._setId(data);
-                this._setName(data);
-                this._setDataDate(data);
-                this._setLocationType(data);
-                this._setWeatherParams(data);
-                this._setSeries(data);
-                this._setSeriesData(data);
+                this.setId(data);
+                this.setName(data);
+                this.setDataDate(data);
+                this.setLocationType(data);
+                this.setWeatherParams(data);
+                this.setSeries(data);
+                this.setDataInSeries(data);
                 this.options = SurfCrew.highcharts.createOptionsWithNameAndSeries(this.name, this.series);
             } catch (error) {
                 console.error("Something went wrong getting location detail from data|" + error);
@@ -27,22 +27,22 @@ var DataPointLocation = function () {
         }
     }).apply(this, arguments);
 };
-DataPointLocation.prototype._setId = function (data) {
+DataPointLocation.prototype.setId = function (data) {
     this.id = data.SiteRep.DV.Location.i;
 };
-DataPointLocation.prototype._setName = function (data) {
+DataPointLocation.prototype.setName = function (data) {
     this.name = data.SiteRep.DV.Location.name;
 };
-DataPointLocation.prototype._setDataDate = function (data) {
+DataPointLocation.prototype.setDataDate = function (data) {
     this.dataDate = data.SiteRep.DV.dataDate;
 };
-DataPointLocation.prototype._setLocationType = function (data) {
+DataPointLocation.prototype.setLocationType = function (data) {
     this.type = data.SiteRep.DV.type;
 };
-DataPointLocation.prototype._setWeatherParams = function (data) {
+DataPointLocation.prototype.setWeatherParams = function (data) {
     this.weatherParametersAvailable = data.SiteRep.Wx.Param;
 };
-DataPointLocation.prototype._setSeriesData = function (data) {
+DataPointLocation.prototype.setDataInSeries = function (data) {
     var period = data.SiteRep.DV.Location.Period;
     for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++) {
         if (dataItem.Rep) {
@@ -58,7 +58,7 @@ DataPointLocation.prototype._setSeriesData = function (data) {
         }
     }
 };
-DataPointLocation.prototype._setSeries = function (data) {
+DataPointLocation.prototype.setSeries = function (data) {
     var params = data.SiteRep.Wx.Param;
     this.series = [];
     for (var paramIndex = 0, param = null; param = params[paramIndex]; paramIndex++) {
@@ -122,7 +122,7 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
                 }
             }
         }
-        this._setSeriesData(data);
+        this.setDataInSeries(data);
     } else {
         console.warn("Data was invalid or location has not been constructed with data.");
     }
