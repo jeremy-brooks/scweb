@@ -11,22 +11,20 @@ var DataPointLocation = function (data, paramKeysToLookFor) {
     this.options = null;
     this.paramKeysToLookFor = paramKeysToLookFor;
 
-    (function (data) {
-        if (this.isDataValid(data)) {
-            try {
-                this.setId(data);
-                this.setName(data);
-                this.setDataDate(data);
-                this.setLocationType(data);
-                this.setWeatherParams(data);
-                this.setSeries(data);
-                this.setDataInSeries(data);
-                this.options = SurfCrew.highcharts.createOptionsWithNameAndSeries(this.name, this.series);
-            } catch (error) {
-                console.error("Something went wrong getting location detail from data|" + error);
-            }
+    if (this.isDataValid(data)) {
+        try {
+            this.setId(data);
+            this.setName(data);
+            this.setDataDate(data);
+            this.setLocationType(data);
+            this.setWeatherParams(data);
+            this.setSeries(data);
+            this.setDataInSeries(data);
+            this.options = SurfCrew.highcharts.createOptionsWithNameAndSeries(this.name, this.series);
+        } catch (error) {
+            console.error("Something went wrong getting location detail from data|" + error);
         }
-    }).apply(this, arguments);
+    }
 };
 DataPointLocation.prototype.setId = function (data) {
     this.id = data.SiteRep.DV.Location.i;

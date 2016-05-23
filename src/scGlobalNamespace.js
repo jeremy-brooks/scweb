@@ -6,7 +6,21 @@ SurfCrew.events = {
 SurfCrew.windDirectionParams = {
     D: {
         units: "degrees",
-        name: "Wind direction"
+        name: "Wind direction",
+        intervals: {
+            N: 360,
+            NNE: 22.5,
+            NE: 45,
+            E: 90,
+            SE: 135,
+            SSE: 157.5,
+            S: 180,
+            SSW: 202.5,
+            SW: 225,
+            W: 270,
+            NW: 315,
+            NNW: 337.5
+        }
     }
 };
 SurfCrew.pressureParams = {
