@@ -9,7 +9,7 @@ var DataPointLocation = function (data, paramKeysToLookFor) {
     this.series = null;
     this.weatherParametersAvailable = null;
     this.options = null;
-    this.paramKeysToLookFor = paramKeysToLookFor || {};
+    this.paramKeysToLookFor = paramKeysToLookFor;
 
     (function (data) {
         if (this.isDataValid(data)) {
@@ -63,7 +63,7 @@ DataPointLocation.prototype.setSeries = function (data) {
     var params = data.SiteRep.Wx.Param;
     this.series = [];
     for (var paramIndex = 0, param = null; param = params[paramIndex]; paramIndex++) {
-        if (param.name !== "V" && param.name !== "D" && param.name !== "W" && param.name !== "P") {
+        if (this.paramKeysToLookFor[param.name]) {
             this._addWeatherParamSeriesToLocation(param);
         }
     }
@@ -110,7 +110,7 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
         newWeatherParameters = data.SiteRep.Wx.Param;
         this.setAdditionalName(data);
         for (var newParamIndex = 0, newParam = null; newParam = newWeatherParameters[newParamIndex]; newParamIndex++) {
-            if (newParam.name === "V" && newParam.name !== "D" && newParam.name !== "W" && newParam.name !== "P") {
+            if (this.paramKeysToLookFor[newParam.name]) {
                 for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++) {
                     if (newParam.name === param.name) {
                         seriesAlreadyExists = true;

@@ -16,7 +16,7 @@ var HybridChart = function (elementId, url, locationToUpdate){
             if (location instanceof DataPointLocation){
                 location.pushDataIntoSeries(parsedData);
             } else {
-                location = new DataPointLocation(parsedData);
+                location = new DataPointLocation(parsedData, SurfCrew.standardParams);
             }
             $(elementId).highcharts(location.options);
 

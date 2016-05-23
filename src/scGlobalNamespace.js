@@ -9,20 +9,6 @@ SurfCrew.windDirectionParams = {
         name: "Wind direction"
     }
 };
-SurfCrew.marineParams = {
-    Wh: {
-        units: "m",
-        name: "Wave height"
-    },
-    Wp: {
-        units: "s",
-        name: "Wave period"
-    },
-    St: {
-        units: "C",
-        name: "Sea temperature"
-    }
-};
 SurfCrew.pressureParams = {
     P: {
         units: "hpa",
@@ -40,6 +26,18 @@ SurfCrew.visibilityParams = {
     }
 };
 SurfCrew.standardParams = {
+    Wh: {
+        units: "m",
+        name: "Wave height"
+    },
+    Wp: {
+        units: "s",
+        name: "Wave period"
+    },
+    St: {
+        units: "C",
+        name: "Sea temperature"
+    },
     Dp: {
         units: "Dp",
         name: "Dew point"
