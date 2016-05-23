@@ -119,9 +119,9 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
                 }
                 if (!seriesAlreadyExists) {
                     this._addWeatherParamSeriesToLocation(newParam);
-                    seriesAlreadyExists = false;
                 }
             }
+            seriesAlreadyExists = false;
         }
         this.setDataInSeries(data);
     } else {
