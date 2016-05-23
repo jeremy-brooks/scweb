@@ -1,7 +1,7 @@
 /**
  * Created by Jeremy on 01/05/2016.
  */
-var DataPointLocation = function () {
+var DataPointLocation = function (data, paramKeysToLookFor) {
     this.id = "";
     this.name = "unknown";
     this.type = "unknown";
@@ -9,6 +9,7 @@ var DataPointLocation = function () {
     this.series = null;
     this.weatherParametersAvailable = null;
     this.options = null;
+    this.paramKeysToLookFor = paramKeysToLookFor || {};
 
     (function (data) {
         if (this.isDataValid(data)) {
@@ -109,7 +110,7 @@ DataPointLocation.prototype.pushDataIntoSeries = function (data) {
         newWeatherParameters = data.SiteRep.Wx.Param;
         this.setAdditionalName(data);
         for (var newParamIndex = 0, newParam = null; newParam = newWeatherParameters[newParamIndex]; newParamIndex++) {
-            if (newParam.name !== "V" && newParam.name !== "D" && newParam.name !== "W" && newParam.name !== "P") {
+            if (newParam.name === "V" && newParam.name !== "D" && newParam.name !== "W" && newParam.name !== "P") {
                 for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++) {
                     if (newParam.name === param.name) {
                         seriesAlreadyExists = true;
