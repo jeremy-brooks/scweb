@@ -3,108 +3,132 @@ SurfCrew.events = {
     latestRawDataLoadedEvent: "latestRawDataLoadedEvent",
     latestLocationDataChangedEvent: "latestLocationDataChangedEvent"
 };
-SurfCrew.highcharts = {
-    data: {
-        transformMarineObs: function (data) {
-            var obs = [];
-            var weatherParams = data.SiteRep.Wx.Param;
-            var siteId = "unknown";
-            var locationRep = data.SiteRep.DV.Location;
-
-            if (locationRep) {
-                siteId = locationRep.i;
-                obs = locationRep.Period;
-                var dateNow = new Date();
-
-                var xAxis = {
-                    categories: [
-                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
-                    ]
-                };
-
-                var yAxis = [{ //--- Secondary yAxis
-                    title: {
-                        text: 'Wave height'
-                    }
-                }, { //--- Primary yAxis
-                    title: {
-                        text: 'Wave period'
-                    }
-                }, { //--- Secondary yAxis
-                    title: {
-                        text: 'Wind speed'
-                    },
-                    opposite: true
-                }];
-
-                var series = [];
-
-                var waveHeight = {
-                    unit: "m",
-                    yAxis: 0,
-                    type: 'column',
-                    name: 'Wave height (m)',
-                    data: []
-                };
-                var wavePeriod = {
-                    unit: "secs",
-                    yAxis: 1,
-                    type: 'column',
-                    name: 'Wave period (s)',
-                    data: []
-                };
-                var windSpeed = {
-                    unit: "kn",
-                    yAxis: 2,
-                    type: 'spline',
-                    name: 'Wind speed (kn)',
-                    data: []
-                };
-
-                var chartOptions = {
-                    siteId: siteId,
-                    chart: {
-                        type: 'column'
-                    },
-                    plotOptions: {
-                        column: {
-                            groupPadding: 0,
-                            shadow: false
-                        },
-                        spline: {
-                            dataLabels: {
-                                enabled: true,
-                                formatter: function () {
-                                    return this.y + " " + this.series.userOptions.unit;
-                                }
-                            },
-                            enableMouseTracking: false
-                        }
-                    },
-                    yAxis: yAxis,
-                    xAxis: xAxis,
-                    series: series
-                };
-
-                series.push(waveHeight);
-                series.push(wavePeriod);
-                series.push(windSpeed);
-
-                for (var periodIndex = 0, period = null; period = obs[periodIndex]; periodIndex++) {
-                    var reportForDate = period.value;
-                    var reportData = period.Rep;
-                    for (var dataIndex = 0, locData = null; locData = reportData[dataIndex]; dataIndex++) {
-                        waveHeight.data.push(Number(locData.Wh) || NaN);
-                        wavePeriod.data.push(Number(locData.Wp) || NaN);
-                        windSpeed.data.push(Number(locData.S) || NaN);
-                    }
-                }
-
-                return chartOptions;
-            } else {
-                console.warn("No data found for location");
-                return null;
-            }
+SurfCrew.windDirectionParams = {
+    D: {
+        units: "degrees",
+        name: "Wind direction",
+        intervals: {
+            N: 360,
+            NNE: 22.5,
+            NE: 45,
+            ENE: 67.5,
+            E: 90,
+            ESE: 112.5,
+            SE: 135,
+            SSE: 157.5,
+            S: 180,
+            SSW: 202.5,
+            SW: 225,
+            WSW: 247.5,
+            W: 270,
+            WNW: 292.5,
+            NW: 315,
+            NNW: 337.5
         }
     }
 };
+SurfCrew.pressureParams = {
+    P: {
+        units: "hpa",
+        name: "Pressure"
+    },
+    Pt: {
+        units: "Pa/s",
+        name: "Pressure tendency"
+    }
+};
+SurfCrew.visibilityParams = {
+    V: {
+        units: "",
+        name: "Visibility"
+    }
+};
+SurfCrew.standardParams = {
+    Wh: {
+        units: "m",
+        name: "Wave height"
+    },
+    Wp: {
+        units: "s",
+        name: "Wave period"
+    },
+    St: {
+        units: "C",
+        name: "Sea temperature"
+    },
+    Dp: {
+        units: "Dp",
+        name: "Dew point"
+    },
+    F: {
+        units: "C",
+        name: "Feels like temperature"
+    },
+    G: {
+        units: "mph",
+        name: "Wind gust"
+    },
+    H: {
+        units: "%",
+        name: "Screen relative humidity"
+    },
+    T: {
+        units: "C",
+        name: "Temperature"
+    },
+    S: {
+        units: "mph",
+        name: "Wind speed"
+    },
+    U: {
+        units: "",
+        name: "Max UV index"
+    },
+    Pp: {
+        units: "%",
+        name: "Precipitation probability"
+    }
+};
+SurfCrew.highcharts = {
+    createOptionsWithNameAndSeries: function (name, series) {
+        return {
+            title: {
+                text: name
+            },
+            series: series,
+            tooltip: {
+                crosshairs: true,
+                shared: true,
+                formatter: function () {
+                    var tooltip = "<b>" + new Date(this.x) + "</b>";
+                    for (var pointIndex = 0, point = null; point = this.points[pointIndex]; pointIndex++) {
+                        tooltip += '<br/><span style="color: ' + point.color + ';">';
+                        tooltip += point.series.name + ": <b>" + point.y + point.series.userOptions.units + "</b>";
+                        tooltip += "</span>"
+                    }
+                    return tooltip;
+                }
+            },
+            yAxis: [{ //--- Primary yAxis
+                title: {
+                    text: null
+                }
+            }, { //--- Secondary yAxis
+                title: {
+                    text: null
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value + "%";
+                    }
+                },
+                opposite: true,
+                max: 100,
+                min: 0
+            }],
+            xAxis: {
+                type: "datetime"
+            }
+        };
+    }
+}
