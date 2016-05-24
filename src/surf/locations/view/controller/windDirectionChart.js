@@ -52,7 +52,7 @@ function highlightColour(windSpeed){
 }
 function drawWindChart(data, title) {
     var chartElementId = "chart" + chartsLoadedCount;
-    $("#charts").append('<div id="' + chartElementId + '" class="col-sm-4" style="height:400px;"></div>');
+    $("#charts").append('<div id="' + chartElementId + '" class="col-sm-3" style="height:400px;"></div>');
     var windChart = new Highcharts.Chart({
         chart: {
             renderTo: chartElementId,
@@ -66,6 +66,10 @@ function drawWindChart(data, title) {
         pane: {
             startAngle: 0,
             endAngle: 360
+        },
+
+        legend: {
+            enabled: false
         },
 
         xAxis: {
