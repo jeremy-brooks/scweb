@@ -1,104 +1,84 @@
 /**
  * Created by Jeremy on 01/05/2016.
  */
-var DataPointLocation = function () {
+var DataPointLocation = function (data, paramKeysToLookFor) {
     this.id = "";
     this.name = "unknown";
     this.type = "unknown";
     this.dataDate = null;
-    this.seriesData = null;
+    this.series = null;
     this.weatherParametersAvailable = null;
     this.options = null;
+    this.paramKeysToLookFor = paramKeysToLookFor;
 
-    (function (data) {
-        var locationData = null;
-        var metaData = null;
-        var period = null;
-
-        if (this.isDataValid(data)) {
-            try {
-                metaData = data.SiteRep.DV;
-                locationData = data.SiteRep.DV.Location;
-                period = locationData.Period;
-                this.id = locationData.i;
-                this.name = locationData.name;
-                this.dataDate = metaData.dataDate;
-                this.type = metaData.type;
-                this.weatherParametersAvailable = data.SiteRep.Wx.Param;
-                this.seriesData = [];
-
-                for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++) {
-                    if (param.name !== "V" && param.name !== "D" && param.name !== "W" && param.name !== "P") {
-                        this.seriesData.push({
-                            yAxis: (param.name === "H" || param.name === "Pp") ? 1 : 0,
-                            units: param.units,
-                            type: 'spline',
-                            id: param.name,
-                            name: param.$,
-                            data: []
-                        });
+    if (this.isDataValid(data)) {
+        try {
+            this.setId(data);
+            this.setName(data);
+            this.setDataDate(data);
+            this.setLocationType(data);
+            this.setWeatherParams(data);
+            this.setSeries(data);
+            this.setDataInSeries(data);
+            this.options = SurfCrew.highcharts.createOptionsWithNameAndSeries(this.name, this.series);
+        } catch (error) {
+            console.error("Something went wrong getting location detail from data|" + error);
+        }
+    }
+};
+DataPointLocation.prototype.setId = function (data) {
+    this.id = data.SiteRep.DV.Location.i;
+};
+DataPointLocation.prototype.setName = function (data) {
+    this.name = data.SiteRep.DV.Location.name;
+};
+DataPointLocation.prototype.setDataDate = function (data) {
+    this.dataDate = data.SiteRep.DV.dataDate;
+};
+DataPointLocation.prototype.setLocationType = function (data) {
+    this.type = data.SiteRep.DV.type;
+};
+DataPointLocation.prototype.setWeatherParams = function (data) {
+    this.weatherParametersAvailable = data.SiteRep.Wx.Param;
+};
+DataPointLocation.prototype.setDataInSeries = function (data) {
+    var period = data.SiteRep.DV.Location.Period;
+    for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++) {
+        if (dataItem.Rep) {
+            for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++) {
+                var xDate = null;
+                for (var seriesIndex = 0, series = null; series = this.series[seriesIndex]; seriesIndex++) {
+                    var date = new Date(dataItem.value);
+                    if (rep[series.id]) {
+                        series.data.push([date.getTime() + (Number(rep.$) * 60 * 1000), Number(rep[series.id])]);
                     }
                 }
-
-                for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++) {
-
-                    if (dataItem.Rep) {
-                        for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++) {
-                            var xDate = null;
-                            for (var seriesIndex = 0, series = null; series = this.seriesData[seriesIndex]; seriesIndex++) {
-                                xDate = Date.parse(dataItem.value);
-                                var xTime = Number(rep.$) * 3600 * 1000;
-                                xDate += xTime;
-                                if (rep[series.id]) {
-                                    series.data.push(Number(rep[series.id]));
-                                }
-                            }
-                        }
-                    }
-                }
-
-                this.options = {
-                    title: {
-                        text: this.name
-                    },
-                    series: this.seriesData,
-                    tooltip: {
-                        crosshairs: true,
-                        shared: true,
-                        formatter: function () {
-                            var tooltip = "<b>Date: " + this.x + "</b>";
-                            for (var pointIndex = 0, point = null; point = this.points[pointIndex]; pointIndex++) {
-                                tooltip += "<br/><span>";
-                                tooltip += point.series.name + ": <b>" + point.y + point.series.userOptions.units + "</b>";
-                                tooltip += "</span>"
-                            }
-                            return tooltip;
-                        }
-                    },
-                    yAxis: [{ //--- Primary yAxis
-                        title: {
-                            text: null
-                        }
-                    }, { //--- Secondary yAxis
-                        title: {
-                            text: null
-                        },
-                        labels: {
-                            formatter: function () {
-                                return this.value + "%";
-                            }
-                        },
-                        opposite: true,
-                        max: 100,
-                        min: 0
-                    }]
-                };
-
-            } catch (error) {
-                console.error("Something went wrong getting location detail from data|" + error);
             }
         }
-    }).apply(this, arguments);
+    }
+};
+DataPointLocation.prototype.setSeries = function (data) {
+    var params = data.SiteRep.Wx.Param;
+    this.series = [];
+    for (var paramIndex = 0, param = null; param = params[paramIndex]; paramIndex++) {
+        if (this.paramKeysToLookFor[param.name]) {
+            this._addWeatherParamSeriesToLocation(param);
+        }
+    }
+};
+DataPointLocation.prototype._addWeatherParamSeriesToLocation = function (param) {
+    this.series.push({
+        yAxis: (param.name === "H" || param.name === "Pp") ? 1 : 0,
+        units: param.units,
+        type: 'spline',
+        id: param.name,
+        name: param.$,
+        data: []
+    });
+};
+DataPointLocation.prototype.addHoursToDate = function (hours, date) {
+    date.setTime(date.getTime() + (hours * 3600));
+    return date;
 };
 DataPointLocation.prototype.isDataValid = function (data) {
     if (data) {
@@ -115,4 +95,34 @@ DataPointLocation.prototype.isDataValid = function (data) {
         console.warn("No data found to set new location");
     }
     return false;
+};
+DataPointLocation.prototype.setAdditionalName = function (data) {
+    this.name += " | " + data.SiteRep.DV.Location.name;
+    this.options.title.text = this.name;
+};
+
+DataPointLocation.prototype.pushDataIntoSeries = function (data) {
+    var seriesAlreadyExists = false;
+    var newWeatherParameters = null;
+    if (this.isDataValid(data) && this.series && this.weatherParametersAvailable) {
+        newWeatherParameters = data.SiteRep.Wx.Param;
+        this.setAdditionalName(data);
+        for (var newParamIndex = 0, newParam = null; newParam = newWeatherParameters[newParamIndex]; newParamIndex++) {
+            if (this.paramKeysToLookFor[newParam.name]) {
+                for (var paramIndex = 0, param = null; param = this.weatherParametersAvailable[paramIndex]; paramIndex++) {
+                    if (newParam.name === param.name) {
+                        seriesAlreadyExists = true;
+                        break;
+                    }
+                }
+                if (!seriesAlreadyExists) {
+                    this._addWeatherParamSeriesToLocation(newParam);
+                }
+            }
+            seriesAlreadyExists = false;
+        }
+        this.setDataInSeries(data);
+    } else {
+        console.warn("Data was invalid or location has not been constructed with data.");
+    }
 };
