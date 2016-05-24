@@ -3,24 +3,28 @@
  */
 var chartsLoadedCount = 0;
 function whenPageHasLoaded() {
-    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354533?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848");
-    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354507?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848");
+    var croydeElementId = "croyde";
+    var watergateElementId = "watergate";
+    $("#charts").append('<div id="'+croydeElementId+'" class="col-sm-12"></div>');
+    $("#charts").append('<div id="'+watergateElementId+'" class="col-sm-12"></div>');
+    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354533?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", watergateElementId);
+    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354507?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", croydeElementId);
 
 }
-function getWindData(url) {
+function getWindData(url, elementId) {
     var http = new XMLHttpRequest();
     var dataUrl = url;
 
     http.onreadystatechange = function () {
         if (http.readyState === 4 && http.status === 200) {
             var parsedData = JSON.parse(http.responseText);
-            var dataToPlot = parseWindDirection(parsedData);
+            var dataToPlot = parseWindDirection(parsedData, elementId);
         }
     };
     http.open("GET", dataUrl, true);
     http.send();
 }
-function parseWindDirection(data) {
+function parseWindDirection(data, elementId) {
     var location = data.SiteRep.DV.Location;
     var period = data.SiteRep.DV.Location.Period;
     for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++) {
@@ -37,7 +41,7 @@ function parseWindDirection(data) {
                     });
                 }
             }
-            drawWindChart(seriesData, location.name + " " + dataItem.value);
+            drawWindChart(seriesData, location.name + " " + dataItem.value, elementId);
         }
     }
 }
@@ -53,9 +57,9 @@ function highlightColour(windSpeed){
         return "#FF0800";
     }
 }
-function drawWindChart(data, title) {
+function drawWindChart(data, title, elementId) {
     var chartElementId = "chart" + chartsLoadedCount;
-    $("#charts").append('<div id="' + chartElementId + '" class="col-sm-3" style="height:400px;"></div>');
+    $("#"+elementId).append('<div id="' + chartElementId + '" class="col-sm-3" style="height:400px;"></div>');
     var windChart = new Highcharts.Chart({
         chart: {
             renderTo: chartElementId,
