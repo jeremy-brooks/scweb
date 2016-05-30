@@ -131,4 +131,4 @@ SurfCrew.highcharts = {
             }
         };
     }
-}
+};

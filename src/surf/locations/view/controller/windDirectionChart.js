@@ -29,19 +29,26 @@ function parseWindDirection(data, elementId) {
     var period = data.SiteRep.DV.Location.Period;
     for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++) {
         if (dataItem.Rep) {
-            var seriesData = [];
+            var windSpeedData = [];
+            var windGustData = [];
             for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++) {
-                if (rep["D"] && rep["S"]) {
+                if (rep["D"] && rep["S"] && rep["G"]) {
                     var x = SurfCrew.windDirectionParams.D.intervals[rep.D];
-                    var y = Number(rep.S);
-                    seriesData.push({
+                    var windSpeedValue = Number(rep.S);
+                    var windGustValue = Number(rep.G);
+                    windSpeedData.push({
                         x: x,
-                        y: y,
-                        color: highlightColour(y)
+                        y: windSpeedValue,
+                        color: highlightColour(windSpeedValue)
+                    });
+                    windGustData.push({
+                        x: x,
+                        y: windGustValue,
+                        color: "#000000"
                     });
                 }
             }
-            drawWindChart(seriesData, location.name + " " + dataItem.value, elementId);
+            drawWindChart(windSpeedData, windGustData, location.name + " " + dataItem.value, elementId);
         }
     }
 }
@@ -57,7 +64,7 @@ function highlightColour(windSpeed){
         return "#FF0800";
     }
 }
-function drawWindChart(data, title, elementId) {
+function drawWindChart(windData, gustData, title, elementId) {
     var chartElementId = "chart" + chartsLoadedCount;
     $("#"+elementId).append('<div id="' + chartElementId + '" class="col-sm-3" style="height:400px;"></div>');
     var windChart = new Highcharts.Chart({
@@ -114,8 +121,13 @@ function drawWindChart(data, title, elementId) {
 
         series: [{
             type: 'column',
-            name: "Wind direction and speed (mph)",
-            data: data,
+            name: "Wind speed (mph)",
+            data: windData,
+            pointPlacement: 'between'
+        },{
+            type: 'column',
+            name: "Wind gust (mph)",
+            data: gustData,
             pointPlacement: 'between'
         }]
     });
