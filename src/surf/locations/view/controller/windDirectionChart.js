@@ -7,7 +7,7 @@ function whenPageHasLoaded() {
     var watergateElementId = "watergate";
     $("#charts").append('<div id="'+watergateElementId+'" class="col-sm-12"></div>');
     $("#charts").append('<div id="'+croydeElementId+'" class="col-sm-12"></div>');
-    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354533?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", watergateElementId);
+    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/310069?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", watergateElementId);
     getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354507?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", croydeElementId);
 
 }

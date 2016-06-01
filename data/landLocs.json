@@ -16,5 +16,23 @@
     "name": "Watergate Bay (Beach)",
     "region": "sw",
     "unitaryAuthArea": "Cornwall"
+  },
+  {
+    "elevation": "7.0",
+    "id": "310069",
+    "latitude": "50.7179",
+    "longitude": "-3.5327",
+    "name": "Exeter",
+    "region": "sw",
+    "unitaryAuthArea": "Devon"
+  },
+  {
+    "id": "162107",
+    "latitude": "50.04",
+    "longitude": "-6.04",
+    "obsLocationType": "Light Vessel",
+    "obsRegion": "South Coast",
+    "obsSource": "FM-13 SHIP",
+    "name": "Seven Stones"
   }
 ]
