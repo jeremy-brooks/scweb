@@ -48,7 +48,7 @@ function parseWindDirection(data, elementId) {
                     });
                 }
             }
-            drawWindChart(windSpeedData, windGustData, location.name + " " + dataItem.value, elementId);
+            drawWindChart(windSpeedData, windGustData, location.name + ": " + moment(dataItem.value, "YYYY-MM-DDZ").format("ddd MMM Do"), elementId);
         }
     }
 }
