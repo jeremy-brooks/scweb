@@ -3,12 +3,12 @@
  */
 var chartsLoadedCount = 0;
 function whenPageHasLoaded() {
-    var croydeElementId = "croyde";
-    var watergateElementId = "watergate";
-    $("#charts").append('<div id="'+watergateElementId+'" class="col-sm-12"></div>');
-    $("#charts").append('<div id="'+croydeElementId+'" class="col-sm-12"></div>');
-    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/310069?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", watergateElementId);
-    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354507?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", croydeElementId);
+    var chart1 = "croyde";
+    var chart2 = "watergate";
+    $("#charts").append('<div id="'+chart2+'" class="col-sm-12"></div>');
+    $("#charts").append('<div id="'+chart1+'" class="col-sm-12"></div>');
+    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/310069?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", chart2);
+    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354507?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", chart1);
 
 }
 function getWindData(url, elementId) {
