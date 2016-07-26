@@ -70,7 +70,7 @@ DataPointLocation.prototype._addWeatherParamSeriesToLocation = function (param) 
     this.series.push({
         yAxis: (param.name === "H" || param.name === "Pp") ? 1 : 0,
         units: param.units,
-        type: 'scatter',
+        type: 'line',
         id: param.name,
         name: param.$,
         data: []

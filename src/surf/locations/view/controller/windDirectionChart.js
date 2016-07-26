@@ -124,11 +124,11 @@ function drawWindChart(windData, gustData, title, elementId) {
             name: "Wind speed (mph)",
             data: windData,
             pointPlacement: 'between'
-        },{
-            type: 'column',
-            name: "Wind gust (mph)",
-            data: gustData,
-            pointPlacement: 'between'
+        // },{
+        //     type: 'column',
+        //     name: "Wind gust (mph)",
+        //     data: gustData,
+        //     pointPlacement: 'between'
         }]
     });
     chartsLoadedCount++;
