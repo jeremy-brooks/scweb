@@ -5,8 +5,10 @@
   "main": "index.js",
   "dependencies": {
     "bootstrap": "^3.3.6",
+    "express": "^4.14.0",
     "highcharts": "^4.2.4",
-    "jquery": "^2.2.3"
+    "jquery": "^2.2.3",
+    "moment": "^2.13.0"
   },
   "devDependencies": {},
   "scripts": {

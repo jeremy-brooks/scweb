@@ -3,38 +3,52 @@
  */
 var chartsLoadedCount = 0;
 function whenPageHasLoaded() {
-    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354507?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848");
+    var chart1 = "croyde";
+    var chart2 = "watergate";
+    $("#charts").append('<div id="'+chart2+'" class="col-sm-12"></div>');
+    $("#charts").append('<div id="'+chart1+'" class="col-sm-12"></div>');
+    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/310069?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", chart2);
+    getWindData("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/354507?res=3hourly&key=27a379e8-5ddf-4f92-9153-d4d2ca731848", chart1);
+
 }
-function getWindData(url) {
+function getWindData(url, elementId) {
     var http = new XMLHttpRequest();
     var dataUrl = url;
 
     http.onreadystatechange = function () {
         if (http.readyState === 4 && http.status === 200) {
             var parsedData = JSON.parse(http.responseText);
-            var dataToPlot = parseWindDirection(parsedData);
+            var dataToPlot = parseWindDirection(parsedData, elementId);
         }
     };
     http.open("GET", dataUrl, true);
     http.send();
 }
-function parseWindDirection(data) {
+function parseWindDirection(data, elementId) {
+    var location = data.SiteRep.DV.Location;
     var period = data.SiteRep.DV.Location.Period;
     for (var dataIndex = 0, dataItem = null; dataItem = period[dataIndex]; dataIndex++) {
         if (dataItem.Rep) {
-            var data = [];
+            var windSpeedData = [];
+            var windGustData = [];
             for (var repIndex = 0, rep = null; rep = dataItem.Rep[repIndex]; repIndex++) {
-                if (rep["D"] && rep["S"]) {
+                if (rep["D"] && rep["S"] && rep["G"]) {
                     var x = SurfCrew.windDirectionParams.D.intervals[rep.D];
-                    var y = Number(rep.S);
-                    data.push({
+                    var windSpeedValue = Number(rep.S);
+                    var windGustValue = Number(rep.G);
+                    windSpeedData.push({
                         x: x,
-                        y: y,
-                        color: highlightColour(y)
+                        y: windSpeedValue,
+                        color: highlightColour(windSpeedValue)
+                    });
+                    windGustData.push({
+                        x: x,
+                        y: windGustValue,
+                        color: "#000000"
                     });
                 }
             }
-            drawWindChart(data, dataItem.value);
+            drawWindChart(windSpeedData, windGustData, location.name + ": " + moment(dataItem.value, "YYYY-MM-DDZ").format("ddd MMM Do"), elementId);
         }
     }
 }
@@ -50,9 +64,9 @@ function highlightColour(windSpeed){
         return "#FF0800";
     }
 }
-function drawWindChart(data, title) {
+function drawWindChart(windData, gustData, title, elementId) {
     var chartElementId = "chart" + chartsLoadedCount;
-    $("#charts").append('<div id="' + chartElementId + '" class="col-sm-3" style="height:400px;"></div>');
+    $("#"+elementId).append('<div id="' + chartElementId + '" class="col-sm-3" style="height:400px;"></div>');
     var windChart = new Highcharts.Chart({
         chart: {
             renderTo: chartElementId,
@@ -107,9 +121,14 @@ function drawWindChart(data, title) {
 
         series: [{
             type: 'column',
-            name: "Wind direction and speed (mph)",
-            data: data,
+            name: "Wind speed (mph)",
+            data: windData,
             pointPlacement: 'between'
+        // },{
+        //     type: 'column',
+        //     name: "Wind gust (mph)",
+        //     data: gustData,
+        //     pointPlacement: 'between'
         }]
     });
     chartsLoadedCount++;

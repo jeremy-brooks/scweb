@@ -68,10 +68,10 @@ SurfCrew.standardParams = {
         units: "mph",
         name: "Wind gust"
     },
-    H: {
-        units: "%",
-        name: "Screen relative humidity"
-    },
+    // H: {
+    //     units: "%",
+    //     name: "Screen relative humidity"
+    // },
     T: {
         units: "C",
         name: "Temperature"
@@ -131,4 +131,4 @@ SurfCrew.highcharts = {
             }
         };
     }
-}
+};
